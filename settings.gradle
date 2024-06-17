@@ -1,0 +1,52 @@
+rootProject.name = 'prices'
+
+gradle.ext.mapstructVersion = '1.5.5.Final'
+gradle.ext.mapstructProcessorVersion = '1.5.5.Final'
+gradle.ext.lombokVersion = '1.18.32'
+gradle.ext.easyRandomVersion = '5.0.0'
+gradle.ext.awaitilityVersion = '4.2.0'
+gradle.ext.lombokMapstructVersion = '0.2.0'
+gradle.ext.springBootVersion = '3.3.0'
+gradle.ext.swaggerAnnotationsVersion = '2.2.22'
+gradle.ext.swaggerCodegenCli = '3.0.57'
+gradle.ext.cucumberVersion = '7.18.0'
+
+include 'code:prices-domain'
+findProject(':code:prices-domain')?.name = 'prices-domain'
+include 'code:prices-application'
+findProject(':code:prices-application')?.name = 'prices-application'
+include 'code:prices-api-rest'
+findProject(':code:prices-api-rest')?.name = 'prices-api-rest'
+include 'code:prices-boot'
+findProject(':code:prices-boot')?.name = 'prices-boot'
+include 'code:prices-infrastructure-database'
+findProject(':code:prices-infrastructure-database')?.name = 'prices-infrastructure-database'
+
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    versionCatalogs {
+        libs {
+            library('springboot-test', "org.springframework.boot:spring-boot-starter-test:${gradle.ext.springBootVersion}")
+            library('springboot-jpa', "org.springframework.boot:spring-boot-starter-data-jpa:${gradle.ext.springBootVersion}")
+            library('springboot-web', "org.springframework.boot:spring-boot-starter-web:${gradle.ext.springBootVersion}")
+            library('springboot-validation', "org.springframework.boot:spring-boot-starter-validation:${gradle.ext.springBootVersion}")
+            library('lombok', "org.projectlombok:lombok:${gradle.ext.lombokVersion}")
+            library('easy-random', "org.jeasy:easy-random-core:${gradle.ext.easyRandomVersion}")
+            library('mapstruct', "org.mapstruct:mapstruct:${gradle.ext.mapstructVersion}")
+            library('mapstruct-processor', "org.mapstruct:mapstruct-processor:${gradle.ext.mapstructProcessorVersion}")
+            library('awaitility', "org.awaitility:awaitility:${gradle.ext.awaitilityVersion}")
+            library('springboot-json', "org.springframework.boot:spring-boot-starter-json:${gradle.ext.springBootVersion}")
+            library('swagger-annotations', "io.swagger.core.v3:swagger-annotations:${gradle.ext.swaggerAnnotationsVersion}")
+            library('lombok-mapstruct', "org.projectlombok:lombok-mapstruct-binding:${gradle.ext.lombokMapstructVersion}")
+            library('cucumber-java', "io.cucumber:cucumber-java:${gradle.ext.cucumberVersion}")
+            library('cucumber-spring', "io.cucumber:cucumber-spring:${gradle.ext.cucumberVersion}")
+            library('cucumber-junit-platform-engine', "io.cucumber:cucumber-junit-platform-engine:${gradle.ext.cucumberVersion}")
+            library('swaggerCodegen', "io.swagger.codegen.v3:swagger-codegen-cli:${gradle.ext.swaggerCodegenCli}")
+        }
+    }
+
+}

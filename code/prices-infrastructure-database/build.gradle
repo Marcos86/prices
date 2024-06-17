@@ -1,0 +1,8 @@
+
+group 'com.mdelamo.prices.infrastructure.jpa'
+
+dependencies {
+    implementation project(path: ':code:prices-domain')
+    api libs.springboot.jpa
+    runtimeOnly 'com.h2database:h2'
+}

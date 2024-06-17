@@ -1,0 +1,5 @@
+group 'com.mdelamo.prices.application'
+
+dependencies {
+    implementation project(path: ':code:prices-domain')
+}

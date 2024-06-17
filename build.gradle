@@ -1,0 +1,56 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.0' apply false
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'com.adarshr.test-logger' version '3.2.0'
+    id 'org.openapi.generator' version '7.4.0' apply false
+}
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    enabled = true
+}
+
+sourceCompatibility = 21
+
+group 'com.mdelamo.prices'
+version '1.0.0-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.adarshr.test-logger'
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation libs.lombok
+        implementation libs.mapstruct
+        implementation libs.springboot.json
+        annotationProcessor libs.mapstruct.processor
+        annotationProcessor libs.lombok
+        annotationProcessor libs.lombok.mapstruct
+        testAnnotationProcessor libs.mapstruct.processor
+        testAnnotationProcessor libs.lombok
+        testAnnotationProcessor libs.lombok.mapstruct
+        testImplementation libs.springboot.test
+        testImplementation libs.easy.random
+        testImplementation libs.awaitility
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

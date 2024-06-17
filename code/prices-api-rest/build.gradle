@@ -1,0 +1,69 @@
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:6.6.0"
+    }
+}
+
+apply plugin: 'org.openapi.generator'
+
+group 'com.mdelamo.prices.api.rest'
+
+dependencies {
+    implementation project(path: ':code:prices-domain')
+    api libs.springboot.web
+    api libs.swagger.annotations
+    api libs.springboot.validation
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/code/prices-api-rest/src/main/resources/openapi.yml".toString()
+    outputDir = "$buildDir/generated/sources/.openapi".toString()
+    apiPackage = "com.mdelamo.prices.api.rest"
+    modelPackage = "com.mdelamo.prices.api.rest.controller.request"
+    modelNameSuffix = "Dto"
+    library = "spring-boot"
+    configOptions = [
+            interfaceOnly                 : "true",
+            serviceImplementation         : "false",
+            openApiNullable               : "false",
+            useTags                       : "true",
+            useBeanValidation             : "true",
+            serializableModel             : "true",
+            useSpringBoot3                : "true",
+            annotationLibrary             : "swagger2",
+            library                       : "spring-boot",
+            skipDefaultInterface          : "true",
+            "java21": "true",
+            dateLibrary                   : "java8",
+            generateConstructorWithAllArgs : "true",
+            generatedConstructorWithRequiredArgs : "true",
+            additionalModelTypeAnnotations: "@lombok.Data @lombok.NoArgsConstructor @lombok.AllArgsConstructor"
+    ]
+    globalProperties = [
+            apis  : "",
+            models: ""
+    ]
+    typeMappings = [
+            OffsetDateTime: "java.time.LocalDateTime",
+            Double        : "java.math.BigDecimal"
+    ]
+    importMappings = [
+            "java.time.OffsetDateTime": "java.time.LocalDateTime"
+    ]
+}
+
+tasks.compileJava.dependsOn tasks.openApiGenerate
+
+sourceSets {
+    main {
+        java {
+            srcDirs("$buildDir/generated/sources/.openapi/src/main/java")
+        }
+    }
+}

@@ -1,0 +1,39 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+group 'com.mdelamo.prices'
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+springBoot {
+    mainClass = 'com.mdelamo.prices.Application'
+}
+
+dependencies {
+    implementation project(path: ':code:prices-domain')
+    implementation project(path: ':code:prices-api-rest')
+    implementation project(path: ':code:prices-application')
+    implementation project(path: ':code:prices-infrastructure-database')
+
+    testImplementation libs.cucumber.java
+    testImplementation libs.cucumber.spring
+    testImplementation libs.cucumber.junit.platform.engine
+}
+
+
+
+tasks.register('cucumber') {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'com.mdelamo.prices', 'src/test/resources']
+        }
+    }
+}

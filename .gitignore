@@ -1,0 +1,16 @@
+/.gradle/
+**/.idea/**
+/debt-restructure-domain.iml
+/code/*/build/
+/.gradle/8.5/*
+/.gradle/buildOutputCleanup/*
+/.gradle/vcs-1/*
+/.gradle/*
+.gradle/*
+/lib/*
+/config/*
+/code/build/*
+/build/*
+
+/code/build/
+/build/

@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: Prices
+  description: Prices microservice
+  version: 1.0.0
+paths:
+  /prices:
+    get:
+      tags:
+        - prices
+      operationId: getPriceByDateAndProductAndBrand
+      summary: Product fixed price in a period of time
+      parameters:
+        - in: query
+          name: price_date
+          description: Date to find a price rate
+          required: true
+          schema:
+            format: date-time
+            type: string
+            example: "2020-03-12T13:34:56"
+        - in: query
+          name: product_id
+          description: Product id to apply a price rate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: brand_id
+          description: Product's brand id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/price_rs'
+        '204':
+          description: Current query has any result.
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '422':
+          $ref: '#/components/responses/unprocessable_entity'
+        '500':
+          description: Internal Server Error
+
+components:
+  responses:
+    price_rs:
+      description: 200 OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Price'
+    bad_request:
+      description: 'Invalid structure, type mismatch, mandatory fields empty'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    not_found:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    unprocessable_entity:
+      description: Unprocessable Entity. There might be business validation failures during the process.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    internal_error:
+      description: Internal error on Issuer side.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Price:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          description: Product identifier
+        brand_id:
+          type: integer
+          format: int64
+          description: Brand identifier
+        price_list:
+          type: integer
+          format: int64
+          description: Applied rate identifier
+        start_date:
+          type: string
+          format: date-time
+          description: Rate start date
+        end_date:
+          type: string
+          format: date-time
+          description: Rate end date
+        price:
+          type: number
+          description: Final price applied
+    Error:
+      type: object
+      description: Error
+      properties:
+        code:
+          type: string
+          readOnly: true
+        message:
+          type: string
+          readOnly: true
+      required:
+        - message
+        - code
+  securitySchemes:
+    jwt_token:
+      type: apiKey
+      in: header
+      name: x-jwt-assertion
+security:
+  - jwt_token: []
