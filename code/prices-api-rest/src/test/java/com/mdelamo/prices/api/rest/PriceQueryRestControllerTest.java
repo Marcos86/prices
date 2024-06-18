@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,5 +62,28 @@ class PriceQueryRestControllerTest {
         assertNotNull(actual);
         assertEquals(HttpStatus.OK, actual.getStatusCode());
         assertEquals(priceDto, actual.getBody());
+    }
+
+    @Test
+    @DisplayName("when get price by date and product brand should find properly without results and answer 404")
+    void getPriceByDateAndProductAndBrandShouldFindProperlyWithoutResultsAndAnswer404() {
+
+        // given
+        final LocalDateTime date = LocalDateTime.now();
+        final Long brand = 1L;
+        final Long product = 99L;
+        final var request = mock(FindPriceRequest.class);
+
+        when(mapper.map(date, product, brand)).thenReturn(request);
+
+        // when
+        final var actual = controller.getPriceByDateAndProductAndBrand(date, product, brand);
+
+        // then
+        verify(mapper).map(date, product, brand);
+
+        assertNotNull(actual);
+        assertEquals(HttpStatus.NOT_FOUND, actual.getStatusCode());
+        assertNull(actual.getBody());
     }
 }

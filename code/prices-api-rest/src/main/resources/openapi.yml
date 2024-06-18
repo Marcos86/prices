@@ -36,10 +36,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/price_rs'
-        '204':
-          description: Current query has any result.
         '400':
           $ref: '#/components/responses/bad_request'
+        '404':
+          description: Resource not found.
         '422':
           $ref: '#/components/responses/unprocessable_entity'
         '500':

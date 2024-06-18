@@ -113,8 +113,7 @@ class PriceJpaRepositoryAdapterIT {
         // then
         assertFalse(actual.isEmpty());
         assertEquals(2, actual.size());
-        assertThat(actual).contains(todaysPrice);
-        assertThat(actual).contains(todaysPrice2);
+        assertThat(actual).contains(todaysPrice).contains(todaysPrice2);
     }
 
     @Test
